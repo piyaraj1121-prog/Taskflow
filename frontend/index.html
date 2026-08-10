@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="task-controls">
+
+    <input
+        id="searchTitle"
+        type="text"
+        placeholder="Search task by title"
+    >
+
+    <button id="searchBtn">
+        Search
+    </button>
+
+    <button id="sortPriorityBtn">
+        Sort by Priority
+    </button>
+
+    <button id="showAllBtn">
+        Show All
+    </button>
+
+</div>
+
+    <header class="topbar">
+        <div>
+            <h1>TaskFlow</h1>
+            <p>Smart Task Management</p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section class="dashboard">
+            <div class="stat-card">
+                <span>Total Tasks</span>
+                <strong id="totalTasks">0</strong>
+            </div>
+
+            <div class="stat-card">
+                <span>To Do</span>
+                <strong id="todoTasks">0</strong>
+            </div>
+
+            <div class="stat-card">
+                <span>In Progress</span>
+                <strong id="progressTasks">0</strong>
+            </div>
+
+            <div class="stat-card">
+                <span>Completed</span>
+                <strong id="completedTasks">0</strong>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="panel-header">
+                <h2>Tasks</h2>
+
+                <button id="refreshBtn">
+                    Refresh
+                </button>
+            </div>
+
+            <div class="task-form">
+
+                <input
+                    id="taskTitle"
+                    type="text"
+                    placeholder="Enter task title"
+                >
+
+                <select id="priority">
+                    <option value="low">Low</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="high">High</option>
+                </select>
+
+                <select id="status">
+                    <option value="todo">To Do</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                </select>
+
+                <input
+                    id="projectId"
+                    type="number"
+                    placeholder="Project ID"
+                >
+
+                <button id="addTaskBtn">
+                    Add Task
+                </button>
+
+            </div>
+
+            <div id="message"></div>
+
+            <div id="taskList" class="task-list">
+                <p class="empty">
+                    No tasks found.
+                </p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="app.js"></script>
+
+</body>
+</html>
