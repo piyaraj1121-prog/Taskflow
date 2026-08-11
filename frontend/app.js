@@ -15,36 +15,92 @@ const projectId = document.getElementById("projectId");
 
 const addTaskBtn = document.getElementById("addTaskBtn");
 const refreshBtn = document.getElementById("refreshBtn");
+const quickAddInput = document.getElementById("quickAddInput");
+const quickAddBtn = document.getElementById("quickAddBtn");
 const searchTitle = document.getElementById("searchTitle");
 const searchBtn = document.getElementById("searchBtn");
 const sortPriorityBtn = document.getElementById("sortPriorityBtn");
 const showAllBtn = document.getElementById("showAllBtn");
 
-async function loadTasks() {
+async function quickAddTask() {
+    const text = quickAddInput.value.trim();
+
+    if (!text) {
+        message.textContent = "Please describe the task.";
+        return;
+    }
+
     try {
-        message.textContent = "Loading tasks...";
+        message.textContent = "✨ AI is creating your task...";
+        quickAddBtn.disabled = true;
 
-        const response = await fetch(`${API_URL}/tasks`);
+        const aiResponse = await fetch(
+            `${API_URL}/tasks/quick-add`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    text: text
+                })
+            }
+        );
 
-        if (!response.ok) {
-            throw new Error("Unable to load tasks");
+        const aiTask = await aiResponse.json();
+
+        if (!aiResponse.ok) {
+            throw new Error(
+                aiTask.detail || "AI Quick Add failed"
+            );
         }
 
-        const tasks = await response.json();
+        const project = Number(projectId.value);
 
-        displayTasks(tasks);
-        updateStats(tasks);
+        if (!project) {
+            message.textContent =
+                "AI understood the task, but Project ID is required to save it.";
+            return;
+        }
 
-        message.textContent = "";
+        const createResponse = await fetch(
+            `${API_URL}/tasks`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    title: aiTask.title,
+                    priority: aiTask.priority,
+                    status: "todo",
+                    project_id: project
+                })
+            }
+        );
+
+        const createdTask = await createResponse.json();
+
+        if (!createResponse.ok) {
+            throw new Error(
+                createdTask.detail || "Task creation failed"
+            );
+        }
+
+        quickAddInput.value = "";
+
+        message.textContent =
+            "✨ AI task created successfully.";
+
+        await loadTasks();
 
     } catch (error) {
         console.error(error);
-        message.textContent = "Could not connect to TaskFlow API.";
+        message.textContent = error.message;
+    } finally {
+        quickAddBtn.disabled = false;
     }
-}
-
-
-function displayTasks(tasks) {
+}function displayTasks(tasks) {
 
     if (tasks.length === 0) {
         taskList.innerHTML = `
@@ -325,3 +381,4 @@ searchBtn.addEventListener("click", searchTasks);
 sortPriorityBtn.addEventListener("click", sortByPriority);
 
 showAllBtn.addEventListener("click", loadTasks);
+quickAddBtn.addEventListener("click", quickAddTask);
