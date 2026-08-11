@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from sqlalchemy import case, func
-
+from .ai_service import ai_quick_add
 from .database import get_db
 from .models import User, Project, Task
-
+from .schemas import QuickAddRequest, QuickAddResponse
 from .schemas import (
     UserCreate,
     UserResponse,
@@ -439,3 +439,6 @@ def search_tasks(
         )
 
     return task
+@router.post("/tasks/quick-add", response_model=QuickAddResponse)
+def quick_add_task(payload: QuickAddRequest):
+    return ai_quick_add(payload.text)

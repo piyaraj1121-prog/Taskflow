@@ -120,15 +120,10 @@ class ProjectStatistics(BaseModel):
 # =========================
 
 class QuickAddRequest(BaseModel):
-    description: str
-    project_id: int
+    text: str = Field(..., min_length=1)
 
-    @field_validator("description")
-    @classmethod
-    def validate_description(cls, value: str) -> str:
-        value = value.strip()
 
-        if not value:
-            raise ValueError("Description cannot be blank")
-
-        return value
+class QuickAddResponse(BaseModel):
+    title: str
+    priority: str
+    due_date: Optional[str] = None

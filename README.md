@@ -1,33 +1,42 @@
-TaskFlow
 # TaskFlow
 
-TaskFlow is a full-stack task management application built with FastAPI, SQLAlchemy, Pydantic, and SQLite.
+TaskFlow is a FastAPI + SQLAlchemy task management application with a
+HTML/CSS/JavaScript dashboard.
 
-## Features
+The project contains:
 
-- User creation
-- Project creation
-- Task creation, update, delete and retrieval
-- Task listing and priority sorting
-- Linear Search and Binary Search
-- Algorithm benchmarking
-- Project task statistics
-- Quick Add task parser
-- Pydantic validation
-- SQLite database persistence
+- FastAPI backend
+- SQLAlchemy database layer
+- Task CRUD APIs
+- Statistics endpoint
+- Priority sorting
+- Binary-search based task search
+- Algorithm implementations and benchmarks
+- AI Quick Add using a zero-key mock parser by default
+- Optional Groq integration behind `USE_GROQ=true`
 
-## Tech Stack
+---
 
-- Python
-- FastAPI
-- SQLAlchemy
-- Pydantic
-- SQLite
-- Uvicorn
+## Project Structure
 
-## Setup
-
-Activate the virtual environment:
-
-```powershell
-.\.venv\Scripts\Activate.ps1
+```text
+TaskFlow/
+├── backend/
+│   ├── ai_service.py
+│   ├── algorithms/
+│   │   └── __init__.py
+│   ├── database.py
+│   ├── main.py
+│   ├── models.py
+│   ├── routes.py
+│   ├── schemas.py
+│   └── requirements.txt
+│
+├── frontend/
+│   ├── app.js
+│   ├── index.html
+│   └── style.css
+│
+├── benchmark.py
+├── check_algorithms.py
+└── README.md
